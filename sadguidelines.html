@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Software architecture document guidelines</title>
+<!-- 2014-06-08 Sun 18:18 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Simon Brown" />
+<meta  name="description" content="Include information that is complementary to the code"
+ />
+<meta  name="keywords" content="architecture" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+
+<link rel="stylesheet" href="css/worg-3zso.css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap-theme.min.css">
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2014 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Software architecture document guidelines</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Context</a></li>
+<li><a href="#sec-2">Functioinal View</a></li>
+<li><a href="#sec-3">Process View</a></li>
+<li><a href="#sec-4">Non-functional View</a></li>
+<li><a href="#sec-5">Constraints</a></li>
+<li><a href="#sec-6">Principles</a></li>
+<li><a href="#sec-7">Logical View</a></li>
+<li><a href="#sec-8">Interface View</a></li>
+<li><a href="#sec-9">Design View</a></li>
+<li><a href="#sec-10">Infrastructure View</a></li>
+<li><a href="#sec-11">Deployment View</a></li>
+<li><a href="#sec-12">Operational View</a></li>
+<li><a href="#sec-13">Security View</a></li>
+<li><a href="#sec-14">Data View</a></li>
+<li><a href="#sec-15">Technology Selection</a></li>
+<li><a href="#sec-16">Architecture Justification</a></li>
+</ul>
+</div>
+</div>
+<p>
+<b>see: <a href="http://www.codingthearchitecture.com/pages/book/software-architecture-document-guidelines.html">http://www.codingthearchitecture.com/pages/book/software-architecture-document-guidelines.html</a></b>
+</p>
+
+<p>
+<b>Please see the <a href="https://leanpub.com/software-architecture-for-developers">Software Architecture for Developers</a> book for the most up to date version of these guidelines.</b>
+</p>
+
+<p>
+The purpose of the software architecture document (SAD) is to provide information that is complementary to the code. At a high level, this might include:
+</p>
+
+
+<div class="figure">
+<p><img src="./img/software-architecture-document-guidelines-1.png" alt="software-architecture-document-guidelines-1.png" />
+</p>
+<p><span class="figure-number">Figure 1:</span> Software architecture document</p>
+</div>
+
+<ol class="org-ol">
+<li>An outline description of the software architecture, including major software components and their interactions.
+</li>
+<li>A common understanding of the drivers (requirements, constraints and principles) that influence the architecture.
+</li>
+<li>A description of the hardware and software platforms on which the system is built and deployed.
+</li>
+<li>Explicit justification of how the architecture satisfies the drivers.
+</li>
+</ol>
+
+<p>
+See <a href="http://www.codingthearchitecture.com/pages/book/the-code-doesnt-tell-the-whole-story.html">The code doesn't tell the whole story</a> for the rationale on why software architecture documentation is necessary. As a guiding principle; the software architecture document should contain information that is complementary to the code and describe what the code itself doesn’t.
+</p>
+
+<p>
+The following sections illustrate the content that should be included in a software architecture document and present information from several different views to take the most common stakeholders into account. It's worth noting that all of these views aren't necessarily required when taking into account factors such as project size, complexity, requirements, team, etc. If the information is available elsewhere, the software architecture document should make a reference to that source rather than repeating it (e.g. non-functional requirements may be stated in the requirements documentation and designs may be in separate design documents or a UML model). The SAD is a living document and may not contain all of the information listed here at any point in time.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><a id="Context" name="Context"></a>Context</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<b>Understanding the system landscape</b>
+</p>
+
+<p>
+One of the hardest things about software development is being asked to come up with a design when all you're given is a set of requirements and a blank sheet of paper. One of the first things I do is step back to see the big picture. What exactly is the context here? What is this all about? What is it we're building and how does it fit in with the existing environment?
+</p>
+
+<p>
+A really useful starting point can be to draw a simple block diagram showing your system and all of the other systems that it interfaces with. For example, if you're building an Internet Banking system you might have an existing core banking system that contains all of the information about customers and their accounts, along with your new systems that allow customers and administrative staff to access this information. Detail isn't important here. It's your wide angle view showing a big picture of the system landscape.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/context-1.png" alt="context-1.png" />
+</p>
+<p><span class="figure-number">Figure 2:</span> Context 1</p>
+</div>
+
+<p>
+Using a whiteboard or a sheet of flip chart paper and a set of index cards is an excellent way to get started. In the diagram above, each index card represents a separate, distinct software system that has been annotated with a very high-level statement of its responsibilities. This is very similar to <a href="http://en.wikipedia.org/wiki/Class-Responsibility-Collaboration_card">Class-Responsibility-Collaboration (CRC) cards</a> although we're working at a very coarse level of granularity and showing collaborations as explicit connections between the cards.
+</p>
+
+<p>
+Such diagrams help you determine the context that your system operates in, which is useful to identify who you potentially need to go and talk to as far as inter-system interfaces are concerned. There are a number of ways to draw these types of diagrams, such as showing your system in the centre of the diagram with inbound/outbound connections surrounding it or you could also choose to show the key actors that have interactions with your system. It's also common to annotate the inter-system connections with some information about their purpose although, as with any diagram, a short supporting commentary is essential.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/context-2.png" alt="context-2.png" />
+</p>
+<p><span class="figure-number">Figure 3:</span> Context 2</p>
+</div>
+
+<p>
+Abstraction is the key here and detail isn't important as this is a starting point for <a href="http://www.codingthearchitecture.com/pages/book/start-with-the-big-picture.html">other diagrams</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><a id="FunctionalView" name="FunctionalView"></a>Functioinal View</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+<b>What does the software do?</b>
+</p>
+
+<p>
+The functional view allows you to summarise what the key functions of the system are. It also allows you to make an explicit link between the functional aspects of the system (use cases, stories, etc) and explain why they are significant to your architecture. A functional view should answer the following types of questions.
+</p>
+
+<ul class="org-ul">
+<li>Is it clear what the system actually does?
+</li>
+<li>Is it clear which features/functions/use cases are significant to the architecture and why?
+</li>
+<li>Is it clear who the key functional users are (roles, actors, etc) and how the system caters for their needs?
+</li>
+<li>It is clear that the above has been used to shape and define the architecture?
+</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="./img/functional-view-1.png" alt="functional-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 4:</span> Functional view</p>
+</div>
+
+<p>
+By all means refer to existing documentation if it's available, or simply produce a summary. The use case diagram above <b>summarises</b> the major features for a public facing website. It shows a couple of user roles (actors) and the major features (use cases). Again, the purpose of this section is to put some <a href="#Context">context</a> around the software.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><a id="ProcessView" name="ProcessView"></a>Process View</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<b>Does your software automate or implement a business process?</b>
+</p>
+
+<p>
+The process view allows you to show what the system does at a high level, and it also provides you with an opportunity to show how the smaller steps within the process fit together. This is particularly useful if the system is implementing or automating a business process and can be used to highlight aspects such as parallelism, concurrency, where processes fork or join, etc. A process view should answer questions like the following.
+</p>
+
+<p>
+Is it clear what the system does from a process perspective?
+Are the process steps, their order and the flow of information clear?
+Are the major flows of information through the system well understood and documented?
+</p>
+
+
+<div class="figure">
+<p><img src="./img/process-view-1.png" alt="process-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 5:</span> Process view</p>
+</div>
+
+<p>
+Again, this doesn't necessarily need to be a long section and diagrams can be used to illustrate the processes. The UML activity diagram above is a very high-level view of the overall process implemented by a software system. It shows the major steps in the process, some of which are performed concurrently. Like the <a href="#FunctionalView">functional view</a>, this is another way to set the scene.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><a id="NonFunctionalView" name="NonFunctionalView"></a>Non-functional View</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+<b>Are there any significant system characteristics?</b>
+</p>
+
+<p>
+The non-functional view allows you to re-iterate or summarise the key non-functional requirements as well as explicitly highlighting those that are deemed as architecturally significant and influence the architecture.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/non-functional-view-1.png" alt="non-functional-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 6:</span> Non-functional View</p>
+</div>
+
+<p>
+Each non-functional requirement should be precise, leaving no interpretation to the reader. Examples where this isn’t the case include; "the request must be serviced quickly", "there should be no overhead", "as fast as possible" , "as small as possible" and "as many customers as possible". A non-functional view should answer the following types of questions.
+</p>
+
+<ul class="org-ul">
+<li>Is there a clear understanding of the non-functional requirements that the architecture must satisfy?
+</li>
+<li>Are the non-functional requirements specific, measurable, achievable, relevant and timely?
+</li>
+<li>Have non-functional requirements that are usually taken for granted been explicitly marked as out of scope if they are not needed (e.g. "user interface elements will only be presented in English" to specify multi-language support out of scope).
+</li>
+<li>Are any of the non-functional requirements unrealistic? (e.g. true 24x7 availability is typically very costly to implement).
+</li>
+</ul>
+
+<p>
+Here are some of the most common non-functional requirements:
+</p>
+
+<ul class="org-ul">
+<li>Performance (e.g. latency and throughput)
+</li>
+<li>Scalability (e.g. data and traffic volumes)
+</li>
+<li>Availability (e.g. uptime, downtime, scheduled maintenance, 24x7, 99.9%, etc)
+</li>
+<li>Security (e.g. authentication, authorisation, data confidentiality)
+</li>
+<li>Extensibility
+</li>
+<li>Flexibility
+</li>
+<li>Auditability
+</li>
+<li>Monitoring and management
+</li>
+<li>Reliability
+</li>
+<li>Failover/disaster recovery targets (e.g. manual vs automatic, how long will this take?)
+</li>
+<li>Interoperability
+</li>
+<li>Legal and regulatory requirements (e.g. data protection act)
+</li>
+<li>Internationalisation and localisation
+</li>
+<li>Accessibility
+</li>
+</ul>
+
+<p>
+Typically, very few people will give you a set of non-functional requirements, let alone write them down. This is why <a href="http://www.codingthearchitecture.com/pages/book/role.html">management of the non-functional requirements is a key part of the software architecture role</a>, so I find it useful to include them in the software architecture document.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><a id="Constraints" name="Constraints"></a>Constraints</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+<b>If you have constraints, how do they affect the architecture?</b>
+</p>
+
+<p>
+Software lives within the context of the real-world, and the real-world has constraints. This section allows you to state these constraints so it's clear that you are working within them and obvious how they affect your architecture decisions.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/constraints-1.png" alt="constraints-1.png" />
+</p>
+<p><span class="figure-number">Figure 7:</span> Constraints</p>
+</div>
+
+<p>
+Constraints are typically forced upon you, usually by the organisation or customer that has asked for the software system to be built. Example constraints include:
+</p>
+
+<ul class="org-ul">
+<li>Time, budget and resources.
+</li>
+<li>Approved technology lists and technology constraints.
+</li>
+<li>Local standards (e.g. development, coding, etc).
+</li>
+<li>Public standards (e.g. HTTP, SOAP, XML, XML Schema, WSDL, etc).
+</li>
+<li>Standard protocols.
+</li>
+<li>Standard message formats.
+</li>
+<li>Skill profile of the development team.
+</li>
+<li>Nature of the project (e.g. tactical or strategic).
+</li>
+</ul>
+
+<p>
+Constraints may be imposed upon you but they aren't all bad. In the words of T.S.Eliot, "Given total freedom the work is likely to sprawl". Give somebody one week to do a task and that task will take one week. Give them two weeks and that same task will take two weeks. Without constraints, there are often an infinite number of ways to solve the problem. Reducing the number of available options often makes your job designing software easier.
+</p>
+
+<p>
+Such constraints have the power to massively influence the architecture, particularly if they limit the technology that can be used to build the solution. If constraints do have an impact, it's worth summarising them (e.g. what they are, why they are being imposed and who is imposing them) and stating how they are significant to your architecture. Doing this prevents you having to answer questions about why you've seemingly made some whacky decisions.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><a id="Principles" name="Principles"></a>Principles</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+<b>What principles do you want to adopt?</b>
+</p>
+
+<p>
+The architectural principles section allows you to highlight those principles that have been used (or you are using) to define the architecture. These could have been explicitly asked for or they could be principles that <b>you</b> want to follow. Example principles include; architectural layering, use of frameworks and libraries, common design patterns and templates for building components and common approaches (e.g. error handling, logging, etc).
+</p>
+
+
+<div class="figure">
+<p><img src="./img/principles-1.png" alt="principles-1.png" />
+</p>
+<p><span class="figure-number">Figure 8:</span> Principles</p>
+</div>
+
+<p>
+Principles help you to <a href="http://www.codingthearchitecture.com/pages/book/structure-and-guidelines-consistency-and-clarity.html">introduce consistency and clarity</a> into a software project, so it's important that everybody on the team has a common understanding of them.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><a id="Logical-View" name="Logical-View"></a>Logical View</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+<b>What is your big picture?</b>
+</p>
+
+<p>
+The logical view is your “big picture” and allows you to present the structure of the system through its components and their interactions. Typically this will include high level technology choices, but the decision to include this is yours.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/logical-view-1.png" alt="logical-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 9:</span> Logical View</p>
+</div>
+
+<ul class="org-ul">
+<li>Is a logical view of the architecture clearly portrayed?
+</li>
+<li>Does it show the major components and interfaces?
+</li>
+<li>Are they described at a high level?
+</li>
+<li>Does the logical view show external systems and any other dependencies at a high level (low level detail about the dependencies isn’t required here)?
+</li>
+<li>Is it clear how the system works from the “30,000 foot view”?
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><a id="InterfaceView" name="InterfaceView"></a>Interface View</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+<b>Interfaces are risky - do you know how yours work?</b>
+</p>
+
+<p>
+Closely related to the logical view is the interface view. Interfaces are one of the riskiest parts of any software system, so it’s very useful to show what the internal/external interfaces are and how they work.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/interface-view-1.png" alt="interface-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 10:</span> Interface View</p>
+</div>
+
+<ul class="org-ul">
+<li>Are the key internal (e.g. databases, messaging systems, etc) and external interfaces (e.g. other systems) well specified at a high level?
+</li>
+<li>If messaging is being used, which queues (point-to-point) and topics (pub-sub) are components using to communicate?
+</li>
+<li>What format are the messages (e.g. plain text or XML defined by a DTD/Schema)?
+</li>
+<li>Are they synchronous or asynchronous?
+</li>
+<li>Are asynchronous messaging links guaranteed?
+</li>
+<li>Are subscribers durable where necessary?
+</li>
+<li>Can messages be received out of order and is this a problem?
+</li>
+<li>Who has ownership of the interfaces?
+</li>
+<li>Are interfaces idempotent?
+</li>
+<li>How often does the interface change and how is versioning handled?
+</li>
+<li>Is the interface always available or do you (e.g.) need to cache data locally?
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><a id="DesignView" name="DesignView"></a>Design View</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+<b>Do any of the lower level details need explaining?</b>
+</p>
+
+<p>
+The design view is where the lower level implementation details start to make an appearance. For example, this could include information such as how your architectural layering will be implemented through to documenting blueprints/common usage patterns for the technologies/frameworks you have chosen for the implementation. Depending on your team size, you may or may not find including this low level of detail useful.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/design-view-1.png" alt="design-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 11:</span> Design View</p>
+</div>
+
+<ul class="org-ul">
+<li>Is it well understood how the key use cases will be implemented?
+</li>
+<li>How are the chosen technologies used and combined?
+</li>
+<li>Are there common patterns across the architecture?
+</li>
+<li>If yes, are these well understood and documented?
+</li>
+<li>Are the diagrams (e.g. UML class and sequence) up to date and do they reflect reality?
+</li>
+<li>Is there too much detail?
+</li>
+<li>Are any common wheels being reinvented? If so, why aren’t vendor/open source products being used?
+</li>
+<li>If the code isn’t enough, is there enough information here to provide the rest of the development team with an overview/the intent of how the designs work?
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><a id="Infrastructure" name="Infrastructure"></a>Infrastructure View</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+<b>Does the infrastructure support your software?</b>
+</p>
+
+<p>
+The infrastructure view is used to describe the physical hardware and networks on which the software will be deployed. Often, you may not be involved in designing the infrastructure, but you do need to understand that it’s sufficient for your purposes.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/infrastructure-view-1.png" alt="infrastructure-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 12:</span> Infrastructure View</p>
+</div>
+
+<ul class="org-ul">
+<li>Is there a clear physical architecture?
+</li>
+<li>What hardware does this include across all tiers?
+</li>
+<li>Does it cater for redundancy, failover and disaster recovery if applicable?
+</li>
+<li>Is it clear how the chosen hardware components have been sized?
+</li>
+<li>If multiple boxes and sites are used, what are the network links between them?
+</li>
+<li>Who is responsible for support and maintenance of the infrastructure?
+</li>
+<li>Are there central teams to look after common infrastructure (e.g. databases, message buses, application servers, networks, routers, switches, load balancers, reverse proxies, internet connections, etc)?
+</li>
+<li>Who owns the resources?
+</li>
+<li>Are there sufficient resources for development, testing, acceptance, pre-production, production, etc?
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><a id="DeploymentView" name="DeploymentView"></a>Deployment View</h2>
+<div class="outline-text-2" id="text-11">
+<p>
+<b>How does your software map onto the infrastructure?</b>
+</p>
+
+<p>
+The deployment view details how the software will be deployed onto the physical infrastructure.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/deployment-view-1.png" alt="deployment-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 13:</span> Deployment View</p>
+</div>
+
+<ul class="org-ul">
+<li>Is it clear how the software components will be deployed across the hardware elements described in the physical view? (e.g. one-to-one mapping, multiple software components per server, etc)
+</li>
+<li>If this is still to be decided, what are the options and have they been documented?
+</li>
+<li>Is it understood how memory and CPU will be partitioned between the processes running on a single hardware node?
+</li>
+<li>Which components are active-active and which are active-passive?
+</li>
+<li>Which components can be scaled-out?
+</li>
+<li>Is it clear how data is replicated across sites?
+</li>
+<li>Has the rollout and recovery strategy been defined (this might be in a separate document, but referenced)?
+</li>
+<li>How are the components installed and configured?
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><a id="OperationalView" name="OperationalView"></a>Operational View</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+<b>How will people run, monitor and manage your software?</b>
+</p>
+
+<p>
+Most systems will be subject to support and operational requirements, particularly around how they are monitored, managed and administered. Including a dedicated section in the software architecture document again lets you be explicit about how your architecture will support those requirements, particularly if you enlist the help of the team that are ultimately going to support your system.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/operational-view-1.png" alt="operational-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 14:</span> Operational View</p>
+</div>
+
+<ul class="org-ul">
+<li>Is it clear how the architecture provides the ability for operation/support teams to monitor and manage the system?
+</li>
+<li>How is this achieved across all tiers of the architecture (e.g. from client tier to database)?
+</li>
+<li>How can operational staff start to diagnose problems?
+</li>
+<li>Where are errors and information logged? (e.g. log files, Windows Event Log, SMNP, JMX, WMI, custom diagnostics, etc)
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13"><a id="SecurityView" name="SecurityView"></a>Security View</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+<b>Is security a key non-functional requirement?</b>
+</p>
+
+<p>
+Security is an important aspect of most systems, so it’s essential that it is thought about and documented clearly. Having a dedicated security section provides a way to explain how your architecture will meet security requirements such as authentication, authorisation, data confidentiality, etc. Some organisations have specialised security teams that will help with and/or need to review your work in this area before deploying your system into a production environment. Being explicit about security helps you spot any holes before it’s too late.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/security-view-1.png" alt="security-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 15:</span> Security View</p>
+</div>
+
+<p>
+Is there a clear understanding of how security is handled within the architecture and how have any security requirements have been satisfied? This may cover:
+</p>
+
+<ul class="org-ul">
+<li>Authentication.
+</li>
+<li>Authorisation.
+</li>
+<li>Confidentiality of data between components (e.g. during user login, during requests between components, using technologies such as web services or messaging, across public networks).
+</li>
+<li>Non-repudiation.
+</li>
+<li>Different types of users and their roles.
+</li>
+<li>The use of a security realm or integration with in-house single sign-on mechanisms.
+</li>
+<li>Network separation using firewalls and DMZs (red, amber, green model).
+</li>
+<li>Restricted access to resources.
+</li>
+<li>Permissioning of data of a per user/role/etc basis and the ability to modify those permissions.
+</li>
+<li>Storage of credentials (e.g. database logons).
+</li>
+<li>Distribution of certificates and keys.
+</li>
+<li>Runtime sandbox.
+</li>
+<li>Signed binaries.
+</li>
+<li>Essential code only on each architectural tier.
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14"><a id="DataView" name="DataView"></a>Data View</h2>
+<div class="outline-text-2" id="text-14">
+<p>
+<b>Is your software very data-centric?</b>
+</p>
+
+<p>
+A specific data view is worth including in your architecture diagram if your system is data-centric; managing a large quantity of data or dealing with complex data flows. This section can include information such as sizing and capacity planning through to archives and backups.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/data-view-1.png" alt="data-view-1.png" />
+</p>
+<p><span class="figure-number">Figure 16:</span> Data View</p>
+</div>
+
+<ul class="org-ul">
+<li>Is there a high level understanding of how much storage will be required to persist data?
+</li>
+<li>What are the archiving and back-up strategies?
+</li>
+<li>Are there any regulatory requirements for the long term archival of business data?
+</li>
+<li>Likewise for log files and audit trails?
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15"><a id="TechnologySelection" name="TechnologySelection"></a>Technology Selection</h2>
+<div class="outline-text-2" id="text-15">
+<p>
+<b>Why did you choose X?</b>
+</p>
+
+<p>
+Including a technology selection section in your software architecture document gives you somewhere to document the decisions that went into choosing or not choosing technologies. It’s often useful to have a summary of these decisions so that they can be referred to later in the project.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/technology-selection-1.png" alt="technology-selection-1.png" />
+</p>
+<p><span class="figure-number">Figure 17:</span> Technology Selection</p>
+</div>
+
+<ul class="org-ul">
+<li>Is it clear why the selected technologies were chosen?
+</li>
+<li>If there were options, why were they not chosen?
+</li>
+<li>Do they all fit in with the constraints outlined previously?
+</li>
+<li>Are all software and hardware tiers covered?
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-16" class="outline-2">
+<h2 id="sec-16"><a id="ArchitectureJustification" name="ArchitectureJustification"></a>Architecture Justification</h2>
+<div class="outline-text-2" id="text-16">
+<p>
+<b>Does your architecture work?</b>
+</p>
+
+<p>
+This section provides a way for you to explicitly state how the non-functional requirements you stated in the non-functional view are satisfied by your architecture. This is an important yet often forgotten piece of the architecture puzzle, and clearly communicating your architecture’s fitness for purpose will help provide everybody with the confidence that your solution will work. If you built an executable reference architecture to prove some of the key non-functional requirements, this is where you can reference that work and the proof of its success.
+</p>
+
+
+<div class="figure">
+<p><img src="./img/architecture-justification-1.png" alt="architecture-justification-1.png" />
+</p>
+<p><span class="figure-number">Figure 18:</span> Architecture Justification</p>
+</div>
+
+<ul class="org-ul">
+<li>For each of the non-functional requirements, is it explicit how the architecture satisfies it?
+</li>
+<li>In the case of performance and scalability targets, are the test cases and results referenced?
+</li>
+<li>If true 24x7 availability is required, is redundancy and automatic failover built into all aspects of the architecture?
+</li>
+<li>Are there any single points of failure?
+</li>
+<li>What happens if a component fails?
+</li>
+<li>What happens if an external system you rely on fails?
+</li>
+<li>Does this affect your availability? Are your transactions ACID?
+</li>
+<li>Would you have 2PC transactions in-doubt?
+</li>
+<li>Can you recover from a system failure?
+</li>
+<li>Who is responsible for system recovery and failover?
+</li>
+<li>Can you recover in a business continuity scenario?
+</li>
+<li>Will all data have been replicated between sites?
+</li>
+<li>How do you tell system components to use alternative resources in the event of DR/BCP?
+</li>
+<li>Has the architecture been reviewed by in-house security risk teams (if applicable)?
+</li>
+</ul>
+
+<p>
+The key question you're trying to answer here is whether your architecture "works".
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = '3zso';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<hr />
+<p class="author">Author: Simon Brown (<a href="mailto:bliss@3zso.com">bliss@3zso.com</a>)</p>
+<p class="date">Date: </p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+<p>Copyright &#169; 2013 - 2014 Bliss Chung. All rights reserved.</p>
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+  document.write(unescape("%3Cspan id='cnzz_stat_icon_1000216635'%3E%3C/span%3E%3Cscript src='"
+    + cnzz_protocol
+    + "s22.cnzz.com/z_stat.php%3Fid%3D1000216635%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</div>
+</body>
+</html>

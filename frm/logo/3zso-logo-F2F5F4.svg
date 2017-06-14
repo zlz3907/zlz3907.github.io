@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="500"
+   height="500"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="3zso-logo-F2F5F4.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="246.07074"
+     inkscape:cy="272.82535"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     inkscape:window-width="1436"
+     inkscape:window-height="849"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="0"
+     showborder="true"
+     borderlayer="false"
+     inkscape:showpageshadow="false" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="cube-c"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-552.36218)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="text"
+     transform="translate(0,-552.36218)">
+    <text
+       xml:space="preserve"
+       style="font-size:303.15655518px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;text-align:start;line-height:100%;letter-spacing:-19.8722229px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#f2f5f4;fill-opacity:1;stroke:none;font-family:Agency FB;-inkscape-font-specification:Agency FB Bold Condensed"
+       x="894.57111"
+       y="-108.38232"
+       id="text3762"
+       sodipodi:linespacing="100%"
+       transform="matrix(0,0.89684964,-1.1150141,0,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3764"
+         x="887.84015"
+         y="-108.38232"
+         style="text-align:center;letter-spacing:-19.8722229px;text-anchor:middle;fill:#f2f5f4;fill-opacity:1"
+         dx="0"><tspan
+           style="letter-spacing:-7.05143404px;fill:#f2f5f4;fill-opacity:1"
+           id="tspan3828">3</tspan><tspan
+           id="tspan3836"
+           style="letter-spacing:-39.10340881px;fill:#f2f5f4;fill-opacity:1">Z</tspan><tspan
+           id="tspan3846"
+           style="letter-spacing:-13.46182728px;fill:#f2f5f4;fill-opacity:1">SO</tspan></tspan></text>
+  </g>
+</svg>

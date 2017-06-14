@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-04-11 Tue 00:20 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>修复ivy由于sha1码不正确导致找不到模块（jar）的错误</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Bliss Chung" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+    <script type='text/javascript' src='http://3zso.com/assets/js/vendor/modernizr.custom.js'></script>
+    <script type='text/javascript' src='http://3zso.com/js/jquery/jquery.js'></script>
+    <script type='text/javascript' src='http://3zso.com/js/jquery/jquery-migrate.min.js'></script>
+
+<!--[if lt IE 10]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://3zso.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+    <!--[if lt IE 9]>
+        <script src="http://3zso.com/assets/js/vendor/respond.min.js"></script>
+        <![endif]-->
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+
+</div><!-- preamble end -->
+ 
+   <div class="layout-reverse theme-base-03">
+     <div class="sidebar">
+       
+       <div style="max-width: 38rem; padding-left: 1rem; padding-right: 1rem;">
+         <div class="side-about">
+ 
+           <h2>
+             <a title="3zso.com" alt="3zso.com" href="/">
+               <img alt="3ZSO" src="http://3zso.com/frm/logo/3zso-logo-128-h.svg" height="48" class="center-block">
+             </a>
+             <hr style="border:1px gray solid;">
+             <a href="/">雪往北飘</a></h2>
+           <p class="lead">博客、编码、架构、自我完善、GTD！</p>
+         </div>
+ 
+         <nav class="sidebar-nav" style="font-size: 20px;">
+           <br >
+           <a class="sidebar-nav-item " href="http://3zso.com">Home</a>
+           <a class="sidebar-nav-item active" href="http://archive.3zso.com">Archive</a>
+           <a class="sidebar-nav-item " href="http://source.3zso.com">Source</a>
+         </nav>
+ 
+         <div class="sidebar-sticky" style="max-width: 38rem; padding-left: 1rem; padding-right: 1rem;">
+           <hr />
+           <div class="sidebar-author">
+             <h1>Bliss Chung <br><small>bliss@3zso.com</small></h1>
+             <a href="https://github.com/zlz3907"><i class="fa fa-github"></i></a>
+             <a href="https://twitter.com/zlz3907"><i class="fa fa-twitter"></i></a>
+             <a href="mailto:bliss@3zso.com"><i class="fa fa-envelope"></i></a>
+           </div>
+         </div> <!-- end of class container sidebar-sticky-->
+       </div>
+     </div>
+
+     <div class="content container">
+      <aside class="site__banner">
+        <div class="container">
+          <div class="row">
+            <div class="text-right">
+              <p class="tagline">Bliss Chung. C<span>st.</span> 2014-06-11 Wed 23:32.<br />
+                 <a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 9.0.5)</p>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-sm-pull-6">
+              <p></p>
+            </div>
+          </div><!-- .row -->
+        </div><!-- .container -->
+      </aside><!-- .site__banner.hidden-xs -->
+
+<!--main class="site__content" role="main"-->
+<div id="post">
+<!-- hidden preamble -->
+<div style="display:none">
+</div>
+<div id="content">
+<h1 class="title">修复ivy由于sha1码不正确导致找不到模块（jar）的错误</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org7979b03">问题描述</a></li>
+<li><a href="#orgbb55140">原因</a></li>
+<li><a href="#orgeaeaa61">解决办法</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7979b03" class="outline-2">
+<h2 id="org7979b03">问题描述</h2>
+<div class="outline-text-2" id="text-org7979b03">
+<p>
+在运行 <code>ant resolve</code> 时出现如下信息：
+</p>
+
+<pre class="example">
+<span class="linenr"> 1: </span>[ivy:retrieve]  problem while downloading module descriptor: SshResource:/home/k
+<span class="linenr"> 2: </span>fs/repository/shared/com.ztools/z-xml/1.0/ivys/ivy.xml (1073)]:
+<span id="coderef-err_title" class="coderef-off"><span class="linenr"> 3: </span>invalid sha1:</span>
+<span id="coderef-exp_sha1" class="coderef-off"><span class="linenr"> 4: </span>expected=b5eb4687b80aec44ea9d06a3c07432d199d965de</span>
+<span id="coderef-com_sha1" class="coderef-off"><span class="linenr"> 5: </span>computed=64a256acca7c2eb97917957703fb3e8454677459 (63ms)</span>
+<span class="linenr"> 6: </span>[ivy:retrieve]          module not found: com.ztools#z-xml;1.0
+<span class="linenr"> 7: </span>[ivy:retrieve]  ==== local: tried
+<span class="linenr"> 8: </span>[ivy:retrieve]    E:\Zhong Lizhi\.ivy2/local/com.ztools/z-xml/1.0/ivys/ivy.xml
+<span class="linenr"> 9: </span>[ivy:retrieve]    -- artifact com.ztools#z-xml;1.0!z-xml.jar:
+<span class="linenr">10: </span>[ivy:retrieve]    E:\Zhong Lizhi\.ivy2/local/com.ztools/z-xml/1.0/jars/z-xml.jar
+<span class="linenr">11: </span>[ivy:retrieve]  ==== shared: tried
+<span class="linenr">12: </span>[ivy:retrieve]    /home/kfs/repository/shared/com.ztools/z-xml/1.0/ivys/ivy.xml
+<span class="linenr">13: </span>[ivy:retrieve]  ==== public: tried
+<span class="linenr">14: </span>[ivy:retrieve]    http://repo1.maven.org/maven2/com/ztools/z-xml/1.0/z-xml-1.0.pom
+<span class="linenr">15: </span>[ivy:retrieve]    -- artifact com.ztools#z-xml;1.0!z-xml.jar:
+<span class="linenr">16: </span>[ivy:retrieve]    http://repo1.maven.org/maven2/com/ztools/z-xml/1.0/z-xml-1.0.jar
+<span class="linenr">17: </span>[ivy:retrieve]          ::::::::::::::::::::::::::::::::::::::::::::::
+<span id="coderef-info_t" class="coderef-off"><span class="linenr">18: </span>[ivy:retrieve]          ::          UNRESOLVED DEPENDENCIES         ::</span>
+<span class="linenr">19: </span>[ivy:retrieve]          ::::::::::::::::::::::::::::::::::::::::::::::
+<span id="coderef-info" class="coderef-off"><span class="linenr">20: </span>[ivy:retrieve]          :: com.ztools#z-xml;1.0: not found</span>
+<span class="linenr">21: </span>[ivy:retrieve]          ::::::::::::::::::::::::::::::::::::::::::::::
+<span class="linenr">22: </span>[ivy:retrieve]
+<span class="linenr">23: </span>[ivy:retrieve]
+<span class="linenr">24: </span>[ivy:retrieve] :: USE VERBOSE OR DEBUG MESSAGE LEVEL FOR MORE DETAILS
+</pre>
+
+<p>
+上面的信息中，在第<a href="#coderef-err_title" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-err_title');" onmouseout="CodeHighlightOff(this, 'coderef-err_title');">3</a>行的位置提示 <code>invalid sha1</code> ，表示下载
+到的<a href="#coderef-com_sha1" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-com_sha1');" onmouseout="CodeHighlightOff(this, 'coderef-com_sha1');">jar文件</a>和发布时的<a href="#coderef-exp_sha1" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-exp_sha1');" onmouseout="CodeHighlightOff(this, 'coderef-exp_sha1');">jar文件</a>已经不是同一个文件了，他们的 <code>sha1</code> 码已
+经完全不同。于是，ivy认为<a href="#coderef-info_t" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-info_t');" onmouseout="CodeHighlightOff(this, 'coderef-info_t');">依赖的模块不能被解析</a>，并提示
+<a href="#coderef-info" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-info');" onmouseout="CodeHighlightOff(this, 'coderef-info');">没有找到相应的依赖模块</a>。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbb55140" class="outline-2">
+<h2 id="orgbb55140">原因</h2>
+<div class="outline-text-2" id="text-orgbb55140">
+<p>
+在公司内部我们配置了一个ivy的共享库，这个库用来存放公司内部发布的项
+目模块，另外ivy有一个本地cache仓库，项目依赖的一些模块都会缓存在这个
+cache仓库中。
+</p>
+
+<p>
+在开发过程中，大家经常会执行 <code>ant clean-cache</code> (ivy:clean-cache)，用
+来清除缓存中的依赖模块，这样可以使得在执行 <code>ant resolve</code> 时能从公司
+共享库里下载最新的项目模块。但是这样做也会删除缓存库里一些已经成熟并
+固化了的开源项目模块，如果缓存里没有这些模块，那么每次解析依赖包时，
+系统都会去公网上下载，这样解析过程会变得很慢。
+</p>
+
+<p>
+这时有人想到将缓存库里的所有内容都拷到公司内部的共享库中（局域网），
+这样一来就相当于在共享库中建立了一个公网仓库的“镜像”（这样做镜像是不
+安全的，请勿模仿！）。于是想clean就可以clean了， <code>Love Who Who</code> ！
+</p>
+
+<p>
+<b>请注意：上面说的是把本地缓存中所有的内容都拷到了共享库中，这里面包含
+了公司内部自行开发的，且没有固化的，且不稳定的一些项目模块。</b>
+</p>
+
+<p>
+问题来了，不巧你依赖的某个项目模块被公司内的其他的“抠地儿”给修改并
+重新发布到共享仓库里了，如果这个发布过程在来点“文艺范儿”，那么Ivy也
+就会给你一个像上面那样的“规范儿”的犯错信息！
+</p>
+
+<p>
+<b>综上所述，是由于开发过程和项目模块发布过程的不规范导致的上述问题的发
+生。</b>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgeaeaa61" class="outline-2">
+<h2 id="orgeaeaa61">解决办法</h2>
+<div class="outline-text-2" id="text-orgeaeaa61">
+<p>
+不规范造成的问题，在这里也用一个很不规范且暴力的方法来解决：
+</p>
+
+<p>
+<b>在ivy共享仓库中输入如下命令，用来修复ivy.xml.sha1文件，使其和ivy.xml
+的sha1编码一致</b>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #b5bd68; font-weight: bold;">for</span> f<span style="color: #b5bd68; font-weight: bold;"> in</span> <span style="color: #b294bb;">`find ./ -name 'ivy.xml'`</span>;<span style="color: #b5bd68; font-weight: bold;">do</span> sha1sum $<span style="color: #f0c674; font-weight: bold;">f</span> | <span style="color: #8abeb7;">\</span>
+    awk -F<span style="color: #8abeb7;">" "</span> <span style="color: #8abeb7;">'{print $1}'</span> &gt; $<span style="color: #f0c674; font-weight: bold;">f</span>.sha1; <span style="color: #b5bd68; font-weight: bold;">done</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+</div><!-- postamble end -->
+
+</div>
+
+<div class="callout-quote animation is-animated">
+<div id="disqus_thread" class="container"></div>
+<script type="text/javascript">
+    var disqus_shortname = '3zso';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!--
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a> -->
+</div>
+
+
+ <div style="clear:both;"></div>
+  
+ <!-- Latest compiled and minified CSS -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  
+ <!-- Optional theme
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+      -->
+ <!-- Latest compiled and minified JavaScript -->
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  
+ <link rel='stylesheet' id='ep2014-styles-css'  href='/css/poole.css' type='text/css' media='all' />
+ <link rel='stylesheet' id='ep2014-styles-css'  href='/css/custom.css' type='text/css' media='all' />
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"> 
+ <script type='text/javascript' src='http://3zso.com/js/jquery/jquery.js'></script>
+ <script type='text/javascript' src='http://3zso.com/js/jquery/jquery-migrate.min.js'></script>
+
+<style type="text/css">
+.container { width: auto;}
+</style>
+
+  
+ </div><!-- content2 end -->
+     <footer role="contentinfo">
+      <div class="content text-center">
+        <small class="copyright">&copy;2017 Zhong Lizhi. Contents licensed under
+          <a rel="license" target="ablank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> with attribution required.
+        </small>
+      </div>
+    </footer>
+
+
+<div style="display:none">
+</div>
+</body>
+</html>

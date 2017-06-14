@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-04-11 Tue 00:20 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>用Zathura来看PDF</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Bliss Chung" />
+<meta name="description" content="在i3wm里安装和使用Zathura来阅读pdf文档"
+ />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+    <script type='text/javascript' src='http://3zso.com/assets/js/vendor/modernizr.custom.js'></script>
+    <script type='text/javascript' src='http://3zso.com/js/jquery/jquery.js'></script>
+    <script type='text/javascript' src='http://3zso.com/js/jquery/jquery-migrate.min.js'></script>
+
+<!--[if lt IE 10]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://3zso.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+    <!--[if lt IE 9]>
+        <script src="http://3zso.com/assets/js/vendor/respond.min.js"></script>
+        <![endif]-->
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+
+</div><!-- preamble end -->
+ 
+   <div class="layout-reverse theme-base-03">
+     <div class="sidebar">
+       
+       <div style="max-width: 38rem; padding-left: 1rem; padding-right: 1rem;">
+         <div class="side-about">
+ 
+           <h2>
+             <a title="3zso.com" alt="3zso.com" href="/">
+               <img alt="3ZSO" src="http://3zso.com/frm/logo/3zso-logo-128-h.svg" height="48" class="center-block">
+             </a>
+             <hr style="border:1px gray solid;">
+             <a href="/">雪往北飘</a></h2>
+           <p class="lead">博客、编码、架构、自我完善、GTD！</p>
+         </div>
+ 
+         <nav class="sidebar-nav" style="font-size: 20px;">
+           <br >
+           <a class="sidebar-nav-item " href="http://3zso.com">Home</a>
+           <a class="sidebar-nav-item active" href="http://archive.3zso.com">Archive</a>
+           <a class="sidebar-nav-item " href="http://source.3zso.com">Source</a>
+         </nav>
+ 
+         <div class="sidebar-sticky" style="max-width: 38rem; padding-left: 1rem; padding-right: 1rem;">
+           <hr />
+           <div class="sidebar-author">
+             <h1>Bliss Chung <br><small>bliss@3zso.com</small></h1>
+             <a href="https://github.com/zlz3907"><i class="fa fa-github"></i></a>
+             <a href="https://twitter.com/zlz3907"><i class="fa fa-twitter"></i></a>
+             <a href="mailto:bliss@3zso.com"><i class="fa fa-envelope"></i></a>
+           </div>
+         </div> <!-- end of class container sidebar-sticky-->
+       </div>
+     </div>
+
+     <div class="content container">
+      <aside class="site__banner">
+        <div class="container">
+          <div class="row">
+            <div class="text-right">
+              <p class="tagline">Bliss Chung. C<span>st.</span> 2014-09-17 Wed 10:44.<br />
+                 <a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org</a> mode 9.0.5)</p>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-sm-pull-6">
+              <p></p>
+            </div>
+          </div><!-- .row -->
+        </div><!-- .container -->
+      </aside><!-- .site__banner.hidden-xs -->
+
+<!--main class="site__content" role="main"-->
+<div id="post">
+<!-- hidden preamble -->
+<div style="display:none">
+</div>
+<div id="content">
+<h1 class="title">用Zathura来看PDF</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org40c01d1">为什么用Zathura</a></li>
+<li><a href="#orgba59cac">安装</a></li>
+<li><a href="#orgd166a39">使用</a></li>
+<li><a href="#orgd191c6d">问题</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org40c01d1" class="outline-2">
+<h2 id="org40c01d1">为什么用Zathura</h2>
+<div class="outline-text-2" id="text-org40c01d1">
+<ul class="org-ul">
+<li>首要原因
+<ul class="org-ul">
+<li>支持全键盘操作（之所以用，就是因为这一个原因）</li>
+</ul></li>
+<li>其它原因
+<ul class="org-ul">
+<li>简洁</li>
+<li>小巧</li>
+<li>速度快</li>
+</ul></li>
+<li>官方提到的特点（在我用之前都没看过！）
+<ul class="org-ul">
+<li>Choose your supported file formats</li>
+<li>Mouse-free navigation</li>
+<li>SyncTeX support</li>
+<li>Quickmarks and bookmarks</li>
+<li>Automatic document reloading</li>
+<li>Easily customizable!</li>
+<li><a href="http://pwmt.org/projects/zathura/">&#x2026; and many more!</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgba59cac" class="outline-2">
+<h2 id="orgba59cac">安装</h2>
+<div class="outline-text-2" id="text-orgba59cac">
+<ul class="org-ul">
+<li>手动安装（参考：<a href="http://pwmt.org/projects/zathura/installation/">http://pwmt.org/projects/zathura/installation/</a>）
+<ul class="org-ul">
+<li>检查依赖：<a href="http://pwmt.org/projects/girara/">Girara</a> &gt;= 0.1.8 和 <a href="http://www.gtk.org/">GTK+</a> &gt;= 3</li>
+<li>下载：<a href="http://pwmt.org/projects/zathura/download/">http://pwmt.org/projects/zathura/download/</a></li>
+<li><p>
+安装
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">$ tar xfv zathura-&lt;version&gt;.tar.gz
+$ cd zathura-&lt;version&gt;
+$ make
+$ make install
+</pre>
+</div></li>
+</ul></li>
+<li><p>
+在Ubuntu14.04安装
+</p>
+<pre class="example">
+sudo apt-get install zathura
+</pre></li>
+<li>其他系统上安装
+<ul class="org-ul">
+<li><a href="http://www.archlinux.org/packages/community/x86_64/zathura">Arch Linux</a></li>
+<li><a href="http://packages.debian.org/en/sid/zathura">Debian</a></li>
+<li><a href="http://pkgs.org/fedora-rawhide/fedora-i386/zathura-0.0.8.5.fc17.i686.rpm.html">Fedora</a></li>
+<li><a href="http://packages.gentoo.org/package/app-text/zathura">Gentoo</a></li>
+<li><a href="http://packages.ubuntu.com/precise/zathura">Ubuntu</a></li>
+<li><a href="http://openports.se/textproc/zathura">OpenBSD</a></li>
+<li><a href="https://www.macports.org/ports.php?by=name&amp;substr=zathura">MacPorts</a></li>
+</ul></li>
+<li><p>
+源码地址
+</p>
+<pre class="example">
+git clone git://pwmt.org/zathura.git
+</pre></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd166a39" class="outline-2">
+<h2 id="orgd166a39">使用</h2>
+<div class="outline-text-2" id="text-orgd166a39">
+<p>
+可参看帮助文档： <code>man zathura</code>
+</p>
+
+<pre class="example">
+ZATHURA(1)                                                                                                                                       ZATHURA(1)
+
+NAME
+       zathura - a document viewer
+
+SYNOPOSIS
+       zathura [OPTION]...
+       zathura [OPTION]... FILE [FILE ...]
+
+DESCRIPTION
+       zathura is a highly customizable and functional document
+       viewer. It provides a minimalistic and space saving interface
+       as well as an easy usage that
+
+       mainly focuses on keyboard interaction.
+
+OPTIONS
+       -e [xid], --reparent [xid]
+              Reparents to window specified by xid
+
+       -c [path], --config-dir [path]
+              Path to the config directory
+
+       -d [path], --data-dir [path]
+              Path to the data directory
+
+       -p [path], --plugins-dir [path]
+              Path to the directory containing plugins
+
+       -w [password], --password [password]
+              The documents password. If multiple documents are opened
+              at once, the password will be used for the first one and
+              zathura will  ask  for  the
+
+              passwords of the remaining files if needed.
+
+       -P [number], --page [number]
+              Open  the document at the given page number. Pages are
+              numbered starting with 1, and negative numbers indicate
+              page numbers starting from the
+
+              end of the document, -1 being the last page.
+
+       --fork Fork into the background
+
+       -l [level], --debug [level]
+              Set log debug level (debug, info, warning, error)
+
+       -s, --synctex
+              Enable synctex support
+
+       -x [cmd], --synctex-editor-command [cmd]
+              Set the synctex editor command
+MOUSE AND KEY BINDINGS
+       J, K   Go to the next or previous page
+
+       h, k, j, l
+              Scroll to the left, down, up or right direction
+
+       Left, Down, Up, Right
+              Scroll to the left, down, up or right direction
+
+       ^t, ^d, ^u, ^y
+              Scroll a half page left, down, up or right
+
+       t, ^f, ^b, space, &lt;S-space&gt;, y
+              Scroll a full page left, down, up or right
+
+       gg, G, nG
+              Goto to the first, the last or to the nth page
+
+       ^o, ^i Move backward and forward through the jump list
+
+       ^j, ^k Bisect forward and backward between the last two jump points
+
+       ^c, Escape
+              Abort
+
+       a, s   Adjust window in best-fit or width mode
+
+       /, ?   Search for text
+
+       n, N   Search for the next or previous result
+
+       o, O   Open document
+
+       f      Follow links
+
+       F      Display link target
+
+       :      Enter command
+
+       r      Rotate by 90 degrees
+
+       ^r     Recolor
+
+       R      Reload document
+
+       Tab    Show index and switch to Index mode
+       d      Toggle dual page view
+
+       F5     Switch to fullscreen mode
+
+       ^m     Toggle inputbar
+
+       ^n     Toggle statusbar
+
+       +, -, =
+              Zoom in, out or to the original size
+
+       zI, zO, z0
+              Zoom in, out or to the original size
+
+       n=     Zoom to size n
+
+       mX     Set a quickmark to a letter or number X
+
+       'X     Goto quickmark saved at letter or number X
+
+       q      Quit
+
+   Index mode
+       k, j   Move to upper or lower entry
+
+       l      Expand entry
+
+       L      Expand all entries
+
+       h      Collapse entry
+
+       H      Collapse all entries
+
+       space, Return
+              Select and open entry
+
+   Mouse bindings
+       Scroll Scroll up or down
+
+       ^Scroll
+              Zoom in or out
+
+       Hold Button2
+              Pan the document
+
+       Button1
+              Follow link
+
+COMMANDS
+       bmark  Save a bookmark
+
+       bdelete
+              Delete a bookmark
+
+       blist  List bookmarks
+
+       close  Close document
+
+       exec   Execute an external command
+
+       info   Show document information
+
+       help   Show help page
+
+       open, o
+              Open a document
+
+       offset Set page offset
+
+       print  Print document
+
+       write, write!
+              Save document (and force overwriting)
+
+       export Export attachments
+CONFIGURATION
+       The default appearance and behaviour of zathura can be
+       overwritten by modifying the zathurarc file (default path:
+       ~/.config/zathura/zathurarc).  For a detailed description
+       please consult zathurarc(5).
+
+KNOWN BUGS
+       If  GDK_NATIVE_WINDOWS  is  enabled  you will experience
+       problems with large documents. In this case zathura might crash
+       or pages cannot be rendered properly. Disabling
+       GDK_NATIVE_WINDOWS fixes this issue.
+
+SEE ALSO
+       zathurarc(5)
+
+AUTHOR
+       pwmt.org
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgd191c6d" class="outline-2">
+<h2 id="orgd191c6d">问题</h2>
+<div class="outline-text-2" id="text-orgd191c6d">
+</div><ul class="org-ul"><li><a id="org31f59aa"></a>解决i3wm桌面里使用Zathura在index mode下的花屏、黑屏问题<br /><div class="outline-text-3" id="text-org31f59aa">
+<ul class="org-ul">
+<li><p>
+问题：打开Pdf文档后，按 <code>tab</code> 键进入索引模式，这时滚屏时会花屏，按回
+车还会假死，有时还黑屏。在后台可以看到错误提示：
+</p>
+
+<pre class="example">
+(zathura:19761): Gdk-WARNING **: The GDK_NATIVE_WINDOWS environment
+variable is not supported in GTK3. See the documentation for
+gdk_window_ensure_native() on how to get native windows.
+
+** (zathura:19761): WARNING **: Couldn't connect to accessibility bus:
+  Failed to connect to socket /tmp/dbus-epDTX77s2T: Connection refused
+(zathura:19761): Gdk-WARNING **:
+  Native Windows wider or taller than 32767 pixels are not supported
+(zathura:19761): Gdk-WARNING **:
+  Native children wider or taller than 65535 pixels are not supported
+(zathura:19761): Gtk-CRITICAL **: _gtk_widget_captured_event:
+  assertion 'WIDGET_REALIZED_FOR_EVENT (widget, event)' failed
+(zathura:19761): Gdk-WARNING **:
+  Native children wider or taller than 65535 pixels are not supported
+(zathura:19761): Gdk-WARNING **:
+  Native children wider or taller than 65535 pixels are not supported
+(zathura:19761): Gdk-WARNING **:
+  Native children wider or taller than 65535 pixels are not supported
+(zathura:19761): Gdk-WARNING **:
+  Native children wider or taller than 65535 pixels are not supported
+</pre></li>
+<li>原因：在i3wm里 <code>GTK_MODULES</code> 这个系统环境变量的值是
+=overlay-srcollbar=，可能是在这个模式下有些功能没法支持导致的。</li>
+<li>解决办法：在 <code>~/.bashrc</code> 文件里加上 <code>export GTK_MODULES=unity-gtk-module</code></li>
+</ul>
+</div></li></ul>
+</div>
+</div>
+<div id="postamble" class="status">
+
+</div><!-- postamble end -->
+
+</div>
+
+<div class="callout-quote animation is-animated">
+<div id="disqus_thread" class="container"></div>
+<script type="text/javascript">
+    var disqus_shortname = '3zso';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!--
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a> -->
+</div>
+
+
+ <div style="clear:both;"></div>
+  
+ <!-- Latest compiled and minified CSS -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  
+ <!-- Optional theme
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+      -->
+ <!-- Latest compiled and minified JavaScript -->
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  
+ <link rel='stylesheet' id='ep2014-styles-css'  href='/css/poole.css' type='text/css' media='all' />
+ <link rel='stylesheet' id='ep2014-styles-css'  href='/css/custom.css' type='text/css' media='all' />
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"> 
+ <script type='text/javascript' src='http://3zso.com/js/jquery/jquery.js'></script>
+ <script type='text/javascript' src='http://3zso.com/js/jquery/jquery-migrate.min.js'></script>
+
+<style type="text/css">
+.container { width: auto;}
+</style>
+
+  
+ </div><!-- content2 end -->
+     <footer role="contentinfo">
+      <div class="content text-center">
+        <small class="copyright">&copy;2017 Zhong Lizhi. Contents licensed under
+          <a rel="license" target="ablank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> with attribution required.
+        </small>
+      </div>
+    </footer>
+
+
+<div style="display:none">
+</div>
+</body>
+</html>

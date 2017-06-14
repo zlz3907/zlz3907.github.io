@@ -1,0 +1,76 @@
+@charset "utf-8";
+
+body {
+    font-family: "微软雅黑", "Kostic Serif", Georgia, serif;
+    font-size: 16px;
+    color: #303c40;
+    letter-spacing:1px;
+}
+
+p {
+    letter-spacing:2px;
+    line-height: 2;
+}
+
+li {
+    letter-spacing:2px;
+}
+
+#table-of-contents {
+    margin-top: 2.5rem;
+}
+
+#table-of-contents h2 {
+    display:none;
+}
+
+.side-about h2 {
+    border-bottom: 0px;
+}
+
+.timestamp {
+  color: #bebebe;
+  font-size: small;
+}
+
+/* ==========================================================================
+   Banner
+   ========================================================================== */
+/**
+ ,* Text content under the site's header.
+ ,*/
+.site__banner .row {
+  display: block;
+}
+.site__banner p {
+  font-size: 14px;
+  line-height: 1.4285714286;
+  margin: 0;
+}
+@media (min-width: 1200px) {
+  .site__banner p span.br {
+    display: block;
+  }
+}
+.site__banner .tagline span {
+  border-bottom: thin solid;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1ex;
+  line-height: 1;
+  margin-left: .2ex;
+  text-transform: uppercase;
+  vertical-align: .55ex;
+}
+.lt-ie9 .site__banner .hidden-xs {
+  display: none;
+}
+@media (min-width: 700px) {
+  .site__banner {
+    margin-bottom: 20px;
+  }
+  .site__banner .row {
+    display: block;
+  }
+}
